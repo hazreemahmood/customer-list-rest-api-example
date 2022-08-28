@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Table, ToastContainer, Toast } from 'react-bootstrap';
-import { Link, Route, Router, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Router, Routes, useLocation, useNavigate } from 'react-router-dom';
 import {collection, query, orderBy, onSnapshot, doc, deleteDoc} from "firebase/firestore"
 import {db} from './firebase'
 
@@ -16,12 +16,12 @@ function CustomerList() {
   const [customer, setCustomer] = useState([]);
   const [customdata, setCustomData] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
 /* function to get all tasks from firestore in realtime */ 
   useEffect(() => {
-    console.log(location.state);
       if (location.state) {
-        setShow([location.state.show, '', location.state.message, location.state.type, true]);
+        setShow([location.state.show, '', location.state.message, location.state.type, true, location.state.title]);
       }
       const q = query(collection(db, 'tasks'), orderBy('created', 'desc'))
       onSnapshot(q, (querySnapshot) => {
@@ -30,11 +30,6 @@ function CustomerList() {
           data: doc.data()
       })))
       })
-  },[])
-
-  
-  useEffect(() => {
-    // fetch('https://firestore.googleapis.com/v1/projects/example-project-72d6d/databases/(default)/documents/tasks/')
     fetch('https://gorest.co.in/public/v2/users', {
         method: "GET",
         headers: {
@@ -46,7 +41,6 @@ function CustomerList() {
       .then((response) => response.json())
       .then((data) => {
           setCustomer(data);
-          
       })
       .catch((err) => {
           console.log(err.message);
@@ -66,6 +60,8 @@ function CustomerList() {
         }
     }).then((response) => {
       setShow([false])
+      // window.history.replaceState({}, document.title)
+      navigate('/list', {state: {show:true, message: 'Record Deleted!', type: 'success'}});
       window.location.reload()
     })
     // setShow([false]);
@@ -88,7 +84,7 @@ function CustomerList() {
               alt=""
             />
             <strong className="me-auto">
-            {show[1] ? 'Delete record?' : ''}
+            {show[1] ? 'Delete record?' : show[5]}
             </strong>
             <small>just now</small>
           </Toast.Header>

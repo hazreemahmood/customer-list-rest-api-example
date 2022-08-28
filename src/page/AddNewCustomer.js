@@ -1,6 +1,6 @@
 import '../App.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, ToastContainer, Toast } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {db} from '../firebase'
 import {collection, addDoc, Timestamp, updateDoc} from 'firebase/firestore'
@@ -26,6 +26,7 @@ function App(){
     const [customerdata, setCustomerData] = useState([]);
     const [customerid, setCustomerId] = useState();
     const [editform, setEdit] = useState();
+    const [show, setShow] = useState([false]);
     useEffect(() => {
         if (location.state) {
             setCustomerData(location.state.data);
@@ -60,7 +61,7 @@ function App(){
                         status: "Active"
                     })
                 })
-                navigate('/list', {state: {show:true, message: 'Record Updated Successfully', type: 'success'}});
+                navigate('/list', {state: {show:true, title: 'Success!', message: 'Record Updated Successfully', type: 'success && text-white'}});
             }else{
                 fetch("https://gorest.co.in/public/v2/users", {
                     method: "POST",
@@ -76,7 +77,17 @@ function App(){
                         status: "Active"
                     })
                 })
-                navigate('/list', {state: {show:true, message: 'New Record Added', type: 'success'}});
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data) {
+                        setShow([true, '', data[0].field + ' ' + data[0].message, 'danger && text-white', true]);
+                    }else{
+                        navigate('/list', {state: {show:true, title: 'Success!', message: 'New Record Added', type: 'success && text-white'}});
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
             }
         } catch (err) {
             alert(err)
@@ -85,6 +96,24 @@ function App(){
     
     return (
         <div>
+            <ToastContainer position="top-end" className="p-3">
+            <Toast bg={show[3]} onClose={() => setShow([false])} show={show[0]} delay={3000} autohide={show[4]}>
+                <Toast.Header>
+                <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                />
+                <strong className="me-auto">
+                    Warning!
+                </strong>
+                <small>just now</small>
+                </Toast.Header>
+                <Toast.Body>
+                {show[2]}
+                </Toast.Body>
+            </Toast>
+            </ToastContainer>
             <div className="back-button">
                 <Button to="/add_new" variant="primary"><div className="button-link"><Link to="/list">Back</Link></div></Button>
             </div>
@@ -93,7 +122,7 @@ function App(){
                 <Form.Control type="hidden" placeholder="edit" ref={edit} defaultValue={editform} />
                 <Form.Control type="hidden" placeholder="edit" ref={customer_id} defaultValue={customerid} />
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>customername</Form.Label>
+                    <Form.Label>Customer Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter Name" ref={customername} defaultValue={customerdata.name} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
