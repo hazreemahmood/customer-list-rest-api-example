@@ -79,7 +79,7 @@ function App(){
                 })
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data) {
+                    if (data[0]) {
                         setShow([true, '', data[0].field + ' ' + data[0].message, 'danger && text-white', true]);
                     }else{
                         navigate('/list', {state: {show:true, title: 'Success!', message: 'New Record Added', type: 'success && text-white'}});

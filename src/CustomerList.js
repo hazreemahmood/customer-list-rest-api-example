@@ -20,6 +20,7 @@ function CustomerList() {
 
 /* function to get all tasks from firestore in realtime */ 
   useEffect(() => {
+    console.log(location.state);
       if (location.state) {
         setShow([location.state.show, '', location.state.message, location.state.type, true, location.state.title]);
       }
@@ -59,12 +60,9 @@ function CustomerList() {
             'Authorization': 'Bearer bf80bf813ebfd5fcbb80a248af81b4d7f12ef4b18258076a07fc4ae9c41f37b6'
         }
     }).then((response) => {
-      setShow([false])
-      // window.history.replaceState({}, document.title)
-      navigate('/list', {state: {show:true, message: 'Record Deleted!', type: 'success'}});
+      navigate('/list', {state: {show:true, title: 'Success!', message: 'Record Deleted!', type: 'success && text-white'}});
       window.location.reload()
     })
-    // setShow([false]);
   }
   /* function to delete a document from firstore */ 
   function handleEdit (id){

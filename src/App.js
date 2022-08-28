@@ -34,7 +34,7 @@ const Edit = (customerid) => {
 
 const App = () => {
   return (
-    <div class="App">
+    <div className="App">
       <Router>
         <Nav defaultActiveKey="/" as="ul">
           <Nav.Item as="li">
