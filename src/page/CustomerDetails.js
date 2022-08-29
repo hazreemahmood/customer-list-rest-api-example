@@ -37,7 +37,7 @@ function App(){
 
     
     return (
-        <div>
+        <div class="container">
             <h2>Customer Details</h2>
             <div className="back-button">
                 <Button to="/add_new" variant="primary"><div className="button-link"><Link to="/list">Back</Link></div></Button>
@@ -49,19 +49,28 @@ function App(){
                 <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
                     <Form.Label column sm="2">Customer Name</Form.Label>
                     <Col sm="10">
-                        <Form.Control plaintext readOnly defaultValue={customerdata.name} />
+                        <Form.Control placeholder="Disabled input"
+        aria-label="Disabled input example"
+        disabled
+        readOnly defaultValue={customerdata.name} />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
                     <Form.Label column sm="2">Email</Form.Label>
                     <Col sm="10">
-                        <Form.Control plaintext readOnly defaultValue={customerdata.email} />
+                        <Form.Control placeholder="Disabled input"
+        aria-label="Disabled input example"
+        disabled
+        readOnly defaultValue={customerdata.email} />
                     </Col>
                 </Form.Group>    
                 <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
                     <Form.Label column sm="2">Gender</Form.Label>
                     <Col sm="10">
-                        <Form.Control plaintext readOnly defaultValue={customerdata.gender} />
+                        <Form.Control placeholder="Disabled input"
+        aria-label="Disabled input example"
+        disabled
+        readOnly defaultValue={customerdata.gender} />
                     </Col>
                 </Form.Group>    
             </Form>

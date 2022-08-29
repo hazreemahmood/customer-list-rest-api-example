@@ -103,7 +103,7 @@ function App(){
     console.log(gender);
     
     return (
-        <div>
+        <div class="container">
             <ToastContainer position="top-end" className="p-3">
             <Toast bg={show[3]} onClose={() => setShow([false])} show={show[0]} delay={3000} autohide={show[4]}>
                 <Toast.Header>
