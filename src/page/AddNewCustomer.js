@@ -16,6 +16,7 @@ function App(){
     const customername = useRef(null);
     const customer_id = useRef(null);
     const customeremail = useRef(null);
+    const customergender = useRef(null);
     const edit = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ function App(){
     const [customerid, setCustomerId] = useState();
     const [editform, setEdit] = useState();
     const [show, setShow] = useState([false]);
+    const [gender, setCustomerGender] = useState();
     useEffect(() => {
         if (location.state) {
             setCustomerData(location.state.data);
@@ -44,7 +46,7 @@ function App(){
                     id: customer_id.current.value,
                     name: customername.current.value,
                     email: customeremail.current.value,
-                    gender: "Male",
+                    gender: customergender.current.value,
                     status: "Active"
                 };
                 fetch("https://gorest.co.in/public/v2/users/"+customer_id.current.value, {
@@ -57,7 +59,7 @@ function App(){
                     body: JSON.stringify({
                         name: customername.current.value,
                         email: customeremail.current.value,
-                        gender: "Male",
+                        gender: customergender.current.value,
                         status: "Active"
                     })
                 })
@@ -73,7 +75,7 @@ function App(){
                     body: JSON.stringify({
                         name: customername.current.value,
                         email: customeremail.current.value,
-                        gender: "Male",
+                        gender: customergender.current.value,
                         status: "Active"
                     })
                 })
@@ -93,6 +95,12 @@ function App(){
             alert(err)
         }
     }
+
+    function handleTemplateChange() {
+        const genders = customergender.current.value;
+        setCustomerGender(genders);
+    }
+    console.log(gender);
     
     return (
         <div>
@@ -128,6 +136,15 @@ function App(){
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" placeholder="Enter Email" ref={customeremail} defaultValue={customerdata.email} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Select ref={customergender} value={gender ? gender : customerdata.gender} onChange={() => handleTemplateChange()} aria-label="Default select example">
+                        <option>Select Gender</option>
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                    </Form.Select>
+                    {/* <Form.Control type="text" placeholder="Enter Gender" ref={customergender} defaultValue={customerdata.gender} /> */}
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Submit

@@ -24,13 +24,6 @@ function CustomerList() {
       if (location.state) {
         setShow([location.state.show, '', location.state.message, location.state.type, true, location.state.title]);
       }
-      const q = query(collection(db, 'tasks'), orderBy('created', 'desc'))
-      onSnapshot(q, (querySnapshot) => {
-      setTasks(querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          data: doc.data()
-      })))
-      })
     fetch('https://gorest.co.in/public/v2/users', {
         method: "GET",
         headers: {
@@ -51,7 +44,6 @@ function CustomerList() {
   
   /* function to delete a document from firstore */ 
   function handleDelete (customer_id){
-    console.log(customer_id);
     fetch("https://gorest.co.in/public/v2/users/"+customer_id, {
         method: "DELETE",
         headers: {
@@ -69,6 +61,7 @@ function CustomerList() {
     // const taskDocRef = doc(db, 'tasks', id)
     setCustomerId(id);
   }
+  console.log(customer);
 
 
   return (
@@ -113,11 +106,11 @@ function CustomerList() {
           {customer.map((custdata, index) => ( 
             <tr>
               <td>{index+1}</td>
-              <td>{custdata.name}</td>
+              <td><Link to="/view" state={{id: custdata.id, data: {name: custdata.name, email: custdata.email, gender: custdata.gender}, edit: 1}}>{custdata.name}</Link></td>
               <td>{custdata.email}</td>
               <td>
                 <Button className='action_btn' variant="primary" onClick={() => handleEdit(custdata.id)}>
-                  <div className="button-link"><Link to="/edit" state={{id: custdata.id, data: {name: custdata.name, email: custdata.email}, edit: 1}}>Edit</Link></div>
+                  <div className="button-link"><Link to="/edit" state={{id: custdata.id, data: {name: custdata.name, email: custdata.email, gender: custdata.gender}, edit: 1}}>Edit</Link></div>
                   </Button>
                 <Button className='action_btn' variant="danger" onClick={() => setShow([true,custdata.id,'Are you sure you want to delete this record?.', 'warning'])}>Delete</Button>
               </td>
